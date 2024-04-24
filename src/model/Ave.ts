@@ -161,4 +161,27 @@ export class Ave extends Animal {
             return queryResult;
         }
     }
+
+    static async atualizarAve(ave: Ave, idAve: number): Promise<Boolean>{
+        let queryResult = false;
+
+        try{
+            const queryUpdateAve = `UPDATE animal SET 
+                                    nomeAnimal='${ave.getNomeAnimal().toUpperCase()}',
+                                    idadeAnimal=${ave.getIdadeAnimal()},
+                                    generoAnimal='${ave.getGeneroAnimal().toUpperCase()}',
+                                    envergadura=${ave.getEnvergadura()}
+                                WHERE idAnimal=${idAve}`;
+            await database.query(queryUpdateAve)
+            .then((result) => {
+                if(result.rowCount !==0){
+                    queryResult = true;
+                }
+            })
+            return queryResult;
+        }catch (error){
+            console.log(`Erro na consulta: ${error}`);
+            return queryResult;
+        }
+    }
 }

@@ -17,7 +17,7 @@ export class Atracao {
     private nomeAtracao: string;
 
     /**
-     * A lista de atracaos presentes na atração.
+     * A lista de habitatAtracao presentes na atração.
      */
     private habitatAtracao: Habitat = new Habitat("");
 
@@ -25,7 +25,7 @@ export class Atracao {
      * Cria uma nova instância de Atracao.
      * 
      * @param _nome O nome da atração.
-     * @param _atracaos A lista de atracaos presentes na atração.
+     * @param _habitatAtracao A lista de habitatAtracao presentes na atração.
      */
     constructor(_nome: string) {
         this.nomeAtracao = _nome;
@@ -50,20 +50,20 @@ export class Atracao {
     }
 
     /**
-     * Obtém a lista de atracaos presentes na atração.
+     * Obtém a lista de habitatAtracao presentes na atração.
      * 
-     * @returns A lista de atracaos da atração.
+     * @returns A lista de habitatAtracao da atração.
      */
-    public getatracaos(): Habitat {
+    public getHabitatAtracao(): Habitat {
         return this.habitatAtracao;
     }
 
     /**
-     * Define a lista de atracaos da atração.
+     * Define a lista de habitatAtracao da atração.
      * 
-     * @param _atracaos A lista de atracaos a ser atribuída à atração.
+     * @param _habitatAtracao A lista de habitatAtracao a ser atribuída à atração.
      */
-    public setatracao(_habitat: Habitat): void {
+    public setHabitatAtracao(_habitat: Habitat): void {
         this.habitatAtracao = _habitat;
     }
 
@@ -176,6 +176,26 @@ export class Atracao {
                 })
             return queryResult;
         } catch (error) {
+            console.log(`Erro na consulta: ${error}`);
+            return queryResult;
+        }
+    }
+
+    static async atualizarAtracao(atracao: Atracao, idAtracao: number): Promise<Boolean>{
+        let queryResult = false;
+
+        try{
+            const queryUpdateAtracao = `UPDATE atracao SET 
+                                        nomeAtracao='${atracao.getNomeAtracao().toUpperCase()}'
+                                    WHERE idAtracao=${idAtracao}`;
+            await database.query(queryUpdateAtracao)
+            .then((result) => {
+                if(result.rowCount !==0){
+                    queryResult = true;
+                }
+            })
+            return queryResult;
+        }catch (error){
             console.log(`Erro na consulta: ${error}`);
             return queryResult;
         }
