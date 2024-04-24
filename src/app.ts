@@ -33,6 +33,14 @@ server.get('/listar-aves', async (req, res) => {
     res.status(200).json(aves);
 });
 
+server.get('/listar-atracao', async (req, res) => {
+    // cria objeto aves e atribui a ele o retorno do método listarAves
+    const atracao = await Atracao.listarAtracoes();
+
+    // retorna a lista de aves em formato json
+    res.status(200).json(atracao);
+});
+
 // Listar todos os habitats cadastradas
 server.get('/habitats', async (req, res) => {
     // cria objeto habitats e atribui a ele o retorno do método listarHabitats
@@ -121,13 +129,34 @@ server.post('/novo/atracao', async (req, res) => {
 
 server.delete('/remover/animal', async(req, res) => {
     const idAnimal = parseInt(req.query.idAnimal as string);
-
     const resultado = await Ave.removerAve(idAnimal);
 
     if(resultado){
         res.status(200).json(`Animal removido com sucesso`);
     }else{
         res.status(401).json(`Erro ao remover animal`);
+    }
+});
+
+server.delete('/remover/atracao', async(req, res) => {
+    const idAtracao = parseInt(req.query.idAtracao as string);
+    const resultado = await Atracao.removerAtracao(idAtracao);
+
+    if(resultado){
+        res.status(200).json(`Atração removida com sucesso`);
+    }else{
+        res.status(401).json(`Erro ao remover atração`);
+    }
+});
+
+server.delete('/remover/habitat', async(req, res) => {
+    const idHabitat = parseInt(req.query.idHabitat as string);
+    const resultado = await Habitat.removerHabitat(idHabitat);
+
+    if(resultado){
+        res.status(200).json(`Habitat removido com sucesso`);
+    }else{
+        res.status(401).json(`Erro ao remover habitat`);
     }
 });
 
