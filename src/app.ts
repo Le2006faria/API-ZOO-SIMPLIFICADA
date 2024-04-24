@@ -119,6 +119,18 @@ server.post('/novo/atracao', async (req, res) => {
     }
 });
 
+server.delete('/remover/animal', async(req, res) => {
+    const idAnimal = parseInt(req.query.idAnimal as string);
+
+    const resultado = await Ave.removerAve(idAnimal);
+
+    if(resultado){
+        res.status(200).json(`Animal removido com sucesso`);
+    }else{
+        res.status(401).json(`Erro ao remover animal`);
+    }
+});
+
 new DatabaseModel().testeConexao().then((resbd) => {
     if(resbd) {
         server.listen(port, () => {

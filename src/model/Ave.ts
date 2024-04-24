@@ -126,4 +126,39 @@ export class Ave extends Animal {
             return insertResult;
         }
     }
+
+    static async removerAve(idAnimal: number): Promise<Boolean> {
+    //Variável para controlar o resultado da função
+        let queryResult = false;
+
+        try{
+            //Query para deletar o animal da tabela animal_habitat
+            const queryDeleteAnimalHabitat = `DELETE FROM animal_habitat WHERE idanimal=${idAnimal}`;
+
+            //executando a query
+            await database.query(queryDeleteAnimalHabitat)
+            //testar o resultado da query
+            .then(async(result) => {
+                //se o resultado for diferente de 0, a query foiexecutada com sucesso
+                if(result.rowCount != 0){
+                    //se a query for executada com sucesso, agora irá remover o animal da tabela
+
+                    //query para remover o animal da tabela animal
+                    const queryDeleteAnimal = `DELETE FROM animal WHERE idanimal=${idAnimal}`;
+                    //executando a query
+                    await database.query(queryDeleteAnimal)
+                    //testar o resultado da query
+                    .then((result) => {
+                        if(result.rowCount !=0){
+                            queryResult = true;
+                        }
+                    })
+                }
+            })
+            return queryResult;
+        }catch (error){
+            console.log(`Erro na consulta: ${error}`);
+            return queryResult;
+        }
+    }
 }
